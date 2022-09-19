@@ -62,29 +62,20 @@ Zillow Data Features:
   
   ### Key Findings, Recommendations, and Takeaways
 
-- After running four models on my train and validate sets, I decided to use the polynomial linear regression model because it provided the lowest RMSE and highest r2 score overall.
-
-- I used the eight most significant features for assessed tax value (bathrooms, square feet of the home, Los Angeles County, total number of bedrooms and bathrooms, lot size, year built, the difference in lot size and home size, and the zip code). I selected a degree multiplier of 2. The RMSE of the selected model was 133682 on train, 135575 on validate, and 134578 on test. The test r2 score was .20.
-
-- Takeaways: the biggest drivers of tax value are the number of bathrooms, the size of the home in square feet, and the number of bedrooms. The addition of zip code, Los Angeles County, total bedrooms and bathrooms, and lot size excluding home square footage decreased the root mean squared error and raised the explained variance score. The models all performed above the baseline RMSE. 
-
-- The selected model has a lower root mean squared error than baseline predictions, but can only account for 20% of the variance in home values. Bathrooms are the most significant single feature that affects home value, but there are many other factors to consider in order to get a better prediction.
-
-- I recommend obtaining accurate data on the number of stories the home has, as well as parking structures or spaces in order to more accurately predict home value. I also recommend adding crime rates and school ratings to the dataset to see if it has any effect on the model's performance. We could also use the type of single family residence (house, condo, townhome, etc.) in order to tune the model. We can also investigate how much the tax assessed value increased annually over the last 50 years in order to make better predictions.
-
-- If I had more time, I would do more feature engineering on the zip codes to see if there is a relationship between that and home value, home size, and home age. I would also test non-linear regression models to see if they perform better on the data we currently have.  
+- 
 
 # Additional Improvements:
 - 
 
 # Contact:
 Dashiell Bringhurst - dashbringhurst@gmail.com
+
 Everett Clark - everett.clark.t@gmail.com
 
 # How to Reproduce::
 **In order to reproduce this project, you will need server credentials to the Codeup database or a .csv of the data**
 
-### Step 1 (Imports) -  
+#### Step 1 (Imports) -  
     - import pandas as pd
     - import numpy as np
     - import wrangle
@@ -97,20 +88,20 @@ Everett Clark - everett.clark.t@gmail.com
     - from sklearn.metrics import mean_squared_error, r2_score, explained_variance_score
     - from sklearn.linear_model import LinearRegression, LassoLars, TweedieRegressor
 
-### Step 2 (Acquisition):  
+#### Step 2 (Acquisition):  
 Acquire the database information from Codeup using a SQL query, which is saved in wrangle.py and has the necessary functions to acquire, prepare, and split the dataset.
 
-### Step 3 (Preparation):  
+#### Step 3 (Preparation):  
 - Prepare and split the dataset. The code for these steps can be found in the wrangle.py file within this repository.
 
-### Step 4 (Exploration):
+#### Step 4 (Exploration):
 - Use pandas to explore the dataframe and scipy.stats to conduct statistical testing on selected features.
 - Use seaborn or matplotlib.pyplot to create visualizations.
 - Conduct a univariate analysis on each feature using barplot for categorical variables and .hist for continuous variables.
 - Conduct a bivariate analysis of each feature against logerror and graph each finding.
 - Conduct multivariate analyses of the most important features against logerror and graph the results.
 
-### Step 5 (Modeling):
+#### Step 5 (Modeling):
 - Create models (OLS regression, LassoLars, TweedieRegressor, ---) with the most important selected features using sklearn.
 - Train each model and evaluate its accuracy on both the train and validate sets.
 - Select the best performing model and use it on the test set.
