@@ -121,6 +121,6 @@ First you will need database server credentials, then:
 - Graph the results of the test using probabilities.
 - Document each step of the process and your findings.
 
-<ol> fff
-  <li> fff
+<ol> Step 1 (Imports)
+  <li> import pandas as pd
 [[Back to top](#top)]
