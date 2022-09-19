@@ -36,9 +36,9 @@
 
 Zillow Data Features:
 
-<img width="1187" alt="image" src="https://user-images.githubusercontent.com/98612085/189556700-b97d7450-bafa-47f8-81a5-10377050600a.png">
+<img width="1189" alt="image" src="https://user-images.githubusercontent.com/98612085/191111788-4b487818-535c-43d2-8f16-c3888fc7c706.png">
 
-<img width="1062" alt="image" src="https://user-images.githubusercontent.com/98612085/189556238-f433cb25-1158-4a29-91bd-4f2b9dc58c55.png">
+<img width="1140" alt="image" src="https://user-images.githubusercontent.com/98612085/191111686-21325882-4258-4ec5-9eef-44dec2e681cd.png">
 
 # Key Findings and Takeaways:
 
@@ -108,5 +108,3 @@ Everett Clark - everett.clark.t@gmail.com
 - Document each step of the process and your findings.
 
 [[Back to top](#top)]
-
-
