@@ -9,47 +9,57 @@ def get_connection(db, user=env.user, host=env.host, password=env.password):
     '''This function uses credentials from an env file to log into a database'''
     return f'mysql+pymysql://{user}:{password}@{host}/{db}'
 
-def new_zillow_db():
-    '''The function uses the get_connection function to connect to a database and retrieve the zillow dataset'''
+# def new_zillow_db():
+#     '''The function uses the get_connection function to connect to a database and retrieve the zillow dataset'''
     
-    zillow = pd.read_sql('''
-    SELECT p.id, p.parcelid, pd.logerror, pd.transactiondate, p.airconditioningtypeid, ac.airconditioningdesc, 
-    p.architecturalstyletypeid, a.architecturalstyledesc, p.basementsqft, p.bathroomcnt, p.bedroomcnt, 
-    p.buildingclasstypeid, b.buildingclassdesc, p.buildingqualitytypeid, p.calculatedbathnbr, p.decktypeid, 
-    p.finishedfloor1squarefeet, p.calculatedfinishedsquarefeet, p.finishedsquarefeet12, p.finishedsquarefeet13, 
-    p.finishedsquarefeet15, p.finishedsquarefeet50, p.finishedsquarefeet6, p.fips, p.fireplacecnt, p.fullbathcnt, 
-    p.garagecarcnt, p.garagetotalsqft, p.hashottuborspa, p.heatingorsystemtypeid, h.heatingorsystemdesc, p.latitude, 
-    p.longitude, p.lotsizesquarefeet, p.poolcnt, p.poolsizesum, p.pooltypeid10, p.pooltypeid2, p.pooltypeid7, 
-    p.propertycountylandusecode, p.propertylandusetypeid, p.propertyzoningdesc, p.rawcensustractandblock, 
-    p.regionidcity, p.regionidneighborhood, p.regionidzip, p.roomcnt, p.storytypeid, p.threequarterbathnbr, 
-    p.typeconstructiontypeid, p.unitcnt, p.yardbuildingsqft17, p.yardbuildingsqft26, p.yearbuilt, p.numberofstories, 
-    p.fireplaceflag, p.structuretaxvaluedollarcnt, p.taxvaluedollarcnt, p.assessmentyear, p.landtaxvaluedollarcnt, 
-    p.taxamount, p.taxdelinquencyflag, p.taxdelinquencyyear, p.censustractandblock
+#     zillow = pd.read_sql('''
+#     SELECT p.id, p.parcelid, pd.logerror, pd.transactiondate, p.airconditioningtypeid, ac.airconditioningdesc, 
+#     p.architecturalstyletypeid, a.architecturalstyledesc, p.basementsqft, p.bathroomcnt, p.bedroomcnt, 
+#     p.buildingclasstypeid, b.buildingclassdesc, p.buildingqualitytypeid, p.calculatedbathnbr, p.decktypeid, 
+#     p.finishedfloor1squarefeet, p.calculatedfinishedsquarefeet, p.finishedsquarefeet12, p.finishedsquarefeet13, 
+#     p.finishedsquarefeet15, p.finishedsquarefeet50, p.finishedsquarefeet6, p.fips, p.fireplacecnt, p.fullbathcnt, 
+#     p.garagecarcnt, p.garagetotalsqft, p.hashottuborspa, p.heatingorsystemtypeid, h.heatingorsystemdesc, p.latitude, 
+#     p.longitude, p.lotsizesquarefeet, p.poolcnt, p.poolsizesum, p.pooltypeid10, p.pooltypeid2, p.pooltypeid7, 
+#     p.propertycountylandusecode, p.propertylandusetypeid, p.propertyzoningdesc, p.rawcensustractandblock, 
+#     p.regionidcity, p.regionidneighborhood, p.regionidzip, p.roomcnt, p.storytypeid, p.threequarterbathnbr, 
+#     p.typeconstructiontypeid, p.unitcnt, p.yardbuildingsqft17, p.yardbuildingsqft26, p.yearbuilt, p.numberofstories, 
+#     p.fireplaceflag, p.structuretaxvaluedollarcnt, p.taxvaluedollarcnt, p.assessmentyear, p.landtaxvaluedollarcnt, 
+#     p.taxamount, p.taxdelinquencyflag, p.taxdelinquencyyear, p.censustractandblock
 
-    FROM properties_2017 as p
-    INNER JOIN predictions_2017 as pd
-    ON p.id = pd.id
-    LEFT JOIN airconditioningtype as ac
-    ON p.airconditioningtypeid = ac.airconditioningtypeid
-    LEFT JOIN architecturalstyletype as a
-    ON p.architecturalstyletypeid = a.architecturalstyletypeid
-    LEFT JOIN buildingclasstype as b
-    ON p.buildingclasstypeid = b.buildingclasstypeid
-    LEFT JOIN heatingorsystemtype as h
-    ON p.heatingorsystemtypeid = h.heatingorsystemtypeid
-    LEFT JOIN propertylandusetype as l
-    ON p.propertylandusetypeid = l.propertylandusetypeid
-    LEFT JOIN storytype as s
-    ON p.storytypeid = s.storytypeid
-    LEFT JOIN typeconstructiontype as t
-    ON p.typeconstructiontypeid = t.typeconstructiontypeid
-    LEFT JOIN unique_properties as u
-    ON p.parcelid = u.parcelid
-    WHERE p.latitude IS NOT NULL
-    AND p.longitude IS NOT NULL
-    AND p.propertylandusetypeid = 261
+#     FROM properties_2017 as p
+#     INNER JOIN predictions_2017 as pd
+#     ON p.id = pd.id
+#     LEFT JOIN airconditioningtype as ac
+#     ON p.airconditioningtypeid = ac.airconditioningtypeid
+#     LEFT JOIN architecturalstyletype as a
+#     ON p.architecturalstyletypeid = a.architecturalstyletypeid
+#     LEFT JOIN buildingclasstype as b
+#     ON p.buildingclasstypeid = b.buildingclasstypeid
+#     LEFT JOIN heatingorsystemtype as h
+#     ON p.heatingorsystemtypeid = h.heatingorsystemtypeid
+#     LEFT JOIN propertylandusetype as l
+#     ON p.propertylandusetypeid = l.propertylandusetypeid
+#     LEFT JOIN storytype as s
+#     ON p.storytypeid = s.storytypeid
+#     LEFT JOIN typeconstructiontype as t
+#     ON p.typeconstructiontypeid = t.typeconstructiontypeid
+#     LEFT JOIN unique_properties as u
+#     ON p.parcelid = u.parcelid
+#     WHERE p.latitude IS NOT NULL
+#     AND p.longitude IS NOT NULL
+#     AND p.propertylandusetypeid = 261
 
-    ;''', get_connection('zillow'))
+#     ;''', get_connection('zillow'))
+#     return zillow
+
+def new_zillow_db():
+    zillow = pd.read_sql('''select p.parcelid, pred.logerror, p.bathroomcnt, p.bedroomcnt, p.calculatedfinishedsquarefeet, 
+    p.fips, p.latitude, p.longitude, p.lotsizesquarefeet, p.regionidcity, p.regionidcounty, p.regionidzip, p.yearbuilt, 
+    p.structuretaxvaluedollarcnt, p.taxvaluedollarcnt, p.landtaxvaluedollarcnt, p.taxamount
+    from properties_2017 p
+    inner join predictions_2017 pred on p.parcelid = pred.parcelid
+    where propertylandusetypeid = 261;
+    ''', get_connection('zillow'))
     return zillow
 
 def get_zillow_data():
