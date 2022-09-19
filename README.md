@@ -9,11 +9,11 @@
     <li><a href="#preliminary-questions">Questions</a></li>
     <li><a href="#planning">Planning</a></li>
     <li><a href="#data-dictionary">Data Dictionary</a></li>
-    <li><a href="#Conclusion-and-Recommendations">Conclusion and Recommendations</a></li>
-    <li><a href="#additional-improvements">Additional Improvements</a></li>
+    <li><a href="#Key-Findings-and-Takeaways">Key Findings and Takeaways</a></li>
     <li><a href="#recommendations">Recommendations</a></li>
+    <li><a href="#additional-improvements">Additional Improvements</a></li>
     <li><a href="#contact">Contact</a></li>
-    <li><a href="#for-reproduction">For Reproduction</a></li>
+    <li><a href="#how-to-reproduce">How to Reproduce</a></li>
   </ol>
 </details>
     
@@ -40,7 +40,7 @@ Zillow Data Features:
 
 <img width="1062" alt="image" src="https://user-images.githubusercontent.com/98612085/189556238-f433cb25-1158-4a29-91bd-4f2b9dc58c55.png">
 
-# Conclusion and Recommendations: 
+# Key Findings and Takeaways:
 
 ### Insights:
 - 
@@ -60,8 +60,7 @@ Zillow Data Features:
   - 0.-- RMSE
   - 0.-- R-squared value
   
-  ### Key Findings, Recommendations, and Takeaways
-
+# Recommendations:
 - 
 
 # Additional Improvements:
@@ -72,10 +71,10 @@ Dashiell Bringhurst - dashbringhurst@gmail.com
 
 Everett Clark - everett.clark.t@gmail.com
 
-# How to Reproduce::
+# How to Reproduce:
 **In order to reproduce this project, you will need server credentials to the Codeup database or a .csv of the data**
 
-#### Step 1 (Imports) -  
+#### Step 1 (Imports):  
     - import pandas as pd
     - import numpy as np
     - import wrangle
@@ -89,7 +88,7 @@ Everett Clark - everett.clark.t@gmail.com
     - from sklearn.linear_model import LinearRegression, LassoLars, TweedieRegressor
 
 #### Step 2 (Acquisition):  
-Acquire the database information from Codeup using a SQL query, which is saved in wrangle.py and has the necessary functions to acquire, prepare, and split the dataset.
+- Acquire the database information from Codeup using a SQL query, which is saved in wrangle.py and has the necessary functions to acquire, prepare, and split the dataset.
 
 #### Step 3 (Preparation):  
 - Prepare and split the dataset. The code for these steps can be found in the wrangle.py file within this repository.
