@@ -60,11 +60,7 @@ Zillow Data Features:
   - 0.-- RMSE
   - 0.-- R-squared value
   
-# Recommendations: 
-  1. 
-  2.
-
-#### Key Findings, Recommendations, and Takeaways
+  ### Key Findings, Recommendations, and Takeaways
 
 - After running four models on my train and validate sets, I decided to use the polynomial linear regression model because it provided the lowest RMSE and highest r2 score overall.
 
@@ -79,24 +75,16 @@ Zillow Data Features:
 - If I had more time, I would do more feature engineering on the zip codes to see if there is a relationship between that and home value, home size, and home age. I would also test non-linear regression models to see if they perform better on the data we currently have.  
 
 # Additional Improvements:
-- Remove additional outliers and focus data on "normal homes" to increase accuracy of model predictions for homes for the 2nd and 3rd quartile of data.
-- Use census tract and block data as they define subdivision bounds. Homes values are typically similar in neighborhoods.
-- Look at historical sale prices and potentially additional counties to how that affects prices.
+- 
 
 # Contact:
+Dashiell Bringhurst - dashbringhurst@gmail.com
 Everett Clark - everett.clark.t@gmail.com
 
-# For Reproduction:
-First you will need database server credentials, then:
+# How to Reproduce::
+**In order to reproduce this project, you will need server credentials to the Codeup database or a .csv of the data**
 
-- Download wrangle.py and project_final_notebook
-- Add your own credentials to the directory (username, host, password)
-- Run the project_final_notebook
-#### How to reproduce this project
-
-- In order to reproduce this project, you will need access to the Codeup database or the .csv of the database. Acquire the database from Codeup using a SQL query, which I saved into a function in wrangle.py. The wrangle.py file has the necessary functions to acquire, prepare, and split the dataset.
-
-- You will need to import the following python libraries into a python file or jupyter notebook: 
+### Step 1 (Imports) -  
     - import pandas as pd
     - import numpy as np
     - import wrangle
@@ -109,18 +97,26 @@ First you will need database server credentials, then:
     - from sklearn.metrics import mean_squared_error, r2_score, explained_variance_score
     - from sklearn.linear_model import LinearRegression, LassoLars, TweedieRegressor
 
+### Step 2 (Acquisition):  
+Acquire the database information from Codeup using a SQL query, which is saved in wrangle.py and has the necessary functions to acquire, prepare, and split the dataset.
+
+### Step 3 (Preparation):  
 - Prepare and split the dataset. The code for these steps can be found in the wrangle.py file within this repository.
-- Use pandas to explore the dataframe and scipy.stats to conduct statistical testing on the selected features.
-- Use seaborn or matplotlib.pyplot to create graphs of your analyses.
+
+### Step 4 (Exploration):
+- Use pandas to explore the dataframe and scipy.stats to conduct statistical testing on selected features.
+- Use seaborn or matplotlib.pyplot to create visualizations.
 - Conduct a univariate analysis on each feature using barplot for categorical variables and .hist for continuous variables.
-- Conduct a bivariate analysis of each feature against tax_value and graph each finding.
-- Conduct multivariate analyses of the most important features against tax_value and graph the results.
-- Create models (OLS regression, LassoLars, TweedieRegressor) with the most important selected features using sklearn.
+- Conduct a bivariate analysis of each feature against logerror and graph each finding.
+- Conduct multivariate analyses of the most important features against logerror and graph the results.
+
+### Step 5 (Modeling):
+- Create models (OLS regression, LassoLars, TweedieRegressor, ---) with the most important selected features using sklearn.
 - Train each model and evaluate its accuracy on both the train and validate sets.
 - Select the best performing model and use it on the test set.
 - Graph the results of the test using probabilities.
 - Document each step of the process and your findings.
 
-<ol> Step 1 (Imports)
-  <li> import pandas as pd
 [[Back to top](#top)]
+
+
