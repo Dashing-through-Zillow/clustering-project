@@ -25,11 +25,10 @@ from sklearn.preprocessing import PolynomialFeatures
 
 def get_counties(df):
     '''
-    This function will create dummy variables out of the original fips column. 
-    And return a dataframe with all of the original columns.
-    We will keep fips column for data validation after making changes. 
-    New columns added will be 'LA', 'Orange', and 'Ventura' which are boolean 
-    The fips ids are renamed to be the name of the county each represents. 
+    This function will create dummy variables out of the original fips column and return a dataframe with all 
+    of the original columns. We will keep fips column for data validation after making changes. 
+    New columns added will be 'LA', 'Orange', and 'Ventura' which are boolean. The fips ids are renamed to be 
+    the name of the county each represents. 
     '''
     # create dummy vars of fips id
     county_df = pd.get_dummies(df.fips)
@@ -41,12 +40,17 @@ def get_counties(df):
     return df_dummies
 
 def verify_counties(df):
+    '''This function takes in a dataframe and verifies that the columns were correctly labeled according to FIPS.
+    It prints a boolean confirmation as a string for each column.'''
     print("LA County Verified: ", df['fips'][df.fips==6037].count() == df.LA.sum())
     print("Orange County Verified: ", df['fips'][df.fips==6059].count() == df.Orange.sum())
     print("Ventura County Verified: ", df['fips'][df.fips==6111].count() == df.Ventura.sum())
 
 def create_features(df):
+    '''This function takes in the Zillow dataframe and performs feature engineering to create new features.'''
+    # determine the age of the home by subtracting yearbuilt from 2017
     df['age'] = 2017 - df.yearbuilt
+    # bin the age column
     df['age_bin'] = pd.cut(df.age, 
                            bins = [0, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140],
                            labels = [0, .066, .133, .20, .266, .333, .40, .466, .533, 
@@ -65,14 +69,14 @@ def create_features(df):
                        )
     # dollar per square foot-structure
     df['structure_dollar_per_sqft'] = df.structuretaxvaluedollarcnt/df.calculatedfinishedsquarefeet
-
+    # bin the dollar per square feet column
     df['structure_dollar_sqft_bin'] = pd.cut(df.structure_dollar_per_sqft, 
                                              bins = [0, 25, 50, 75, 100, 150, 200, 300, 500, 1000, 1500],
                                              labels = [0, .1, .2, .3, .4, .5, .6, .7, .8, .9]
                                             )
     # dollar per square foot-land
     df['land_dollar_per_sqft'] = df.landtaxvaluedollarcnt/df.lotsizesquarefeet
-
+    # bin dollar per square foot-land
     df['lot_dollar_sqft_bin'] = pd.cut(df.land_dollar_per_sqft, bins = [0, 1, 5, 20, 50, 100, 250, 500, 1000, 1500, 2000],
                                        labels = [0, .1, .2, .3, .4, .5, .6, .7, .8, .9]
                                       )
@@ -85,9 +89,8 @@ def create_features(df):
     return df
 
 def remove_outliers(df):
-    '''
-    remove outliers in bed, bath, zip, square feet, acres & tax rate
-    '''
+    '''This function takes in a dataframe and removes outliers in bed, bath, zip, square feet, acres & tax rate.
+        It returns the dataframe with the outliers removed.'''
 
     return df[((df.bathroomcnt <= 7) & (df.bedroomcnt <= 7) & 
                (df.regionidzip < 100000) & 
@@ -143,6 +146,8 @@ def spearman_test(x,y):
     return corr, p
 
 def fit_scale_and_concat(df, X_train):
+    '''This function takes in a dataframe and the X_train dataset and returns the scaled features. The MinMax scaler
+    is used to fit on X_train and transformed on each dataset.'''
     # the variables that still need scaling
     scaled_vars = ['latitude', 'longitude', 'bathroomcnt', 'taxrate', 'calculatedfinishedsquarefeet', 'age']
     # create new column names for the scaled variables by adding 'scaled_' to the beginning of each variable name 
@@ -151,24 +156,23 @@ def fit_scale_and_concat(df, X_train):
     scaler = MinMaxScaler(copy=True).fit(X_train[scaled_vars])
     # transform scaled_vars and concatenate to df
     scaled_array = scaler.transform(df[scaled_vars])
+    # turn the scaled features into a dataframe for concatenation
     scaled_df = pd.DataFrame(scaled_array, columns=scaled_column_names, index=df.index.values)
     return pd.concat((df, scaled_df), axis=1)
 
 def find_k(X_train, cluster_vars, k_range):
+    '''This function takes in three arguments and returns a graph of k using SSE and a dataframe for each k
+    value.'''
     sse = []
     for k in k_range:
         kmeans = KMeans(n_clusters=k)
-
         # X[0] is our X_train dataframe..the first dataframe in the list of dataframes stored in X. 
         kmeans.fit(X_train[cluster_vars])
-
         # inertia: Sum of squared distances of samples to their closest cluster center.
         sse.append(kmeans.inertia_) 
-
     # create a dataframe with all of our metrics to compare them across values of k: SSE, delta, pct_delta
     k_comparisons_df = pd.DataFrame(dict(k=k_range[0:-1], 
                              sse=sse[0:-1]))
-
     # plot k with inertia
     plt.plot(k_comparisons_df.k, k_comparisons_df.sse, 'bx-')
     plt.xlabel('k')
@@ -179,21 +183,20 @@ def find_k(X_train, cluster_vars, k_range):
     return k_comparisons_df
 
 def create_clusters(X_train, k, cluster_vars):
+    '''This function takes in three arguments and fits a dataframe to KMeans using the selected number for k.'''
     # create kmean object
     kmeans = KMeans(n_clusters=k, random_state = 217)
-
     # fit to train and assign cluster ids to observations
     kmeans.fit(X_train[cluster_vars])
 
     return kmeans
 
-# get the centroids for each distinct cluster...
-
 def get_centroids(kmeans, cluster_vars, cluster_name):
+    '''This function takes in three arguments and finds the centroids for each variable selected. The centroid
+    columns are returned as a dataframe.'''
     # get the centroids for each distinct cluster...
-
     centroid_col_names = ['centroid_' + i for i in cluster_vars]
-
+    # turn the centroid columns into a dataframe
     centroid_df = pd.DataFrame(kmeans.cluster_centers_, 
                                columns=centroid_col_names).reset_index().rename(columns={'index': cluster_name})
 
@@ -202,15 +205,18 @@ def get_centroids(kmeans, cluster_vars, cluster_name):
 # label cluster for each observation
 
 def assign_clusters(df, kmeans, cluster_vars, cluster_name, centroid_df):
+    '''This function takes in five arguments and concatenates the centroid dataframe to the selected dataset.'''
     clusters = pd.DataFrame(kmeans.predict(df[cluster_vars]), 
                             columns=[cluster_name], index=df.index)
-
+    # merge cluster columns with centroid columns
     clusters_centroids = clusters.merge(centroid_df, on=cluster_name, copy=False).set_index(clusters.index.values)
-
+    # concatenate all columns to dataset
     df = pd.concat([df, clusters_centroids], axis=1)
     return df
 
 def plot_age_sqft(X_train):
+    '''This function takes in a dataframe and returns six graphs for age and square feet. Each graph represents a
+    different area cluster.'''
     plt.figure(figsize=(20,20))
     # plt.scatter(y=X_train.latitude, x=X_train.longitude, c=X_train.area_cluster, alpha=.4)
     plt.subplot(3,2,1)
@@ -254,6 +260,8 @@ def plot_age_sqft(X_train):
     plt.show()
 
 def plot_age_error(X_train, y_train):
+    '''This function takes in two dataframes and returns six graphs for logerror and age. Each graph represents a
+    different size cluster.'''
     plt.figure(figsize=[16,16])
     plt.subplot(3,2,1)
     plt.scatter(y=y_train[X_train.area_cluster==0].logerror, x=X_train[X_train.area_cluster==0].age, alpha=.4, 
@@ -307,6 +315,8 @@ def plot_age_error(X_train, y_train):
     plt.show()
 
 def plot_size_error(X_train, y_train):
+    '''This function takes in two dataframes and returns six graphs for log error and square footage. Each graph
+    represents a different area cluster.'''
     plt.figure(figsize=(20,20))
 
     plt.subplot(3,2,1)
@@ -360,6 +370,7 @@ def plot_size_error(X_train, y_train):
     plt.show()
 
 def anova_sqft_fips(X_train):
+    '''This function takes in one argument and returns the results for a one-way ANOVA on counties and square footage.'''
     F, p = stats.f_oneway(X_train['calculatedfinishedsquarefeet'][X_train['fips'] == 6037],
                X_train['calculatedfinishedsquarefeet'][X_train['fips'] == 6059],
                X_train['calculatedfinishedsquarefeet'][X_train['fips'] == 6111])
@@ -372,6 +383,8 @@ def anova_sqft_fips(X_train):
     return F, p
 
 def plot_size_county(X_train, y_train):
+    '''This function takes in two arguments and returns six graphs for log error and square footage. Each graph
+    represents a different size cluster.'''
     plt.figure(figsize=(20,20))
 
     plt.subplot(3,2,1)
@@ -426,6 +439,8 @@ def plot_size_county(X_train, y_train):
     plt.show()
 
 def plot_size_county_error(X_train, y_train):
+    '''This function takes in two arguments and returns three graphs for log error and square footage. Each graph
+    represents a different county.'''
     plt.figure(figsize=[20,8])
     plt.subplot(1,3,1)
     plt.scatter(y=y_train[X_train.fips==6037.0].logerror, x=X_train[X_train.fips==6037.0].calculatedfinishedsquarefeet, alpha=.7)
