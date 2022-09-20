@@ -228,7 +228,7 @@ def model_performance(m1, m2, m3, m4):
     # return a dataframe of the model results
     return df.round(4)
 
-def test_poly_lm(X_train_scaled, X_validate_scaled, X_test_scaled, y_train, y_validate, y_test, train, d):
+def test_poly_lm(X_train_scaled, X_validate_scaled, X_test_scaled, y_train, y_validate, y_test, d):
     '''This function takes in seven arguments (X_train_scaled, X_validate_scaled, X_test_scaled, y_train, y_validate, 
     train, and the desired degree. The function initiates a polynomial features linear regression model object and fits 
     the train dataset to the model. The function predicts values for the target variable and outputs the a graph of the 
@@ -256,26 +256,25 @@ def test_poly_lm(X_train_scaled, X_validate_scaled, X_test_scaled, y_train, y_va
     y_test['yhat'] = lm2.predict(X_test_degree3)
     # test rmse
     rmse_test = mean_squared_error(y_test.logerror, y_test.yhat)**(1/2)
-    # create a new column for the model's predictions on the train set
-    train['yhat'] = lm2.predict(X_train_degree3)
     # calculate the model r2 score for train
     r2 = r2_score(y_test.logerror, y_test.yhat)
     # calculate the RMSE for the test set
     RMSE = sqrt(mean_squared_error(y_test.logerror, y_test.yhat))
     # calculate the baseline RMSE from the train set
-    RMSE_baseline = sqrt(mean_squared_error(train.logerror, train.baseline))
+    RMSE_baseline = sqrt(mean_squared_error(y_train.logerror, X_train_scaled.baseline))
     # determine whether the model performs better than baseline on test
     better =  RMSE < RMSE_baseline
     # plot the model's performance
     plt.figure(figsize=(16,8))
-    plt.plot(y_test.logerror, y_test.yhat, alpha=.3, color="grey")
-    plt.annotate("Baseline: Predict Using Mean", (16, 9.5))
-    plt.plot(y_test.logerror, y_test.logerror, alpha=.5, color="blue", label='Ideal Performance')
-    plt.annotate("The Ideal Line: Predicted = Actual", (.5, 3.5), rotation=15.5)
+    #plt.plot(y_test.logerror, y_test.yhat, alpha=.3, color="grey")
+    #plt.annotate("Baseline: Predict Using Mean", (16, 9.5))
+    plt.hlines(y=0, xmin=-3, xmax=3, alpha=.5, color="blue", label='Ideal Performance')
+    plt.vlines(x=0, ymin=-.02, ymax=.08, alpha=.5, color='blue')
+    plt.annotate("The Ideal Line: No Error", (.5, 3.5), rotation=15.5)
     plt.scatter(y_test.logerror, y_test.yhat, 
             alpha=.5, color="red", s=10)
-    plt.xlabel("Actual Tax Value")
-    plt.ylabel("Predicted Tax Value")
+    plt.xlabel("Actual Log Error")
+    plt.ylabel("Predicted Log Error")
     plt.title("The Performance of Polynomial Model")
     plt.legend()
     plt.show()
