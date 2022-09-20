@@ -425,3 +425,29 @@ def plot_size_county(X_train, y_train):
     plt.suptitle('Is there distinction between clusters when visualizing size of the home by the error in zestimate based on county?', y=.91)
     plt.show()
 
+def plot_size_county_error(X_train, y_train):
+    plt.figure(figsize=[20,8])
+    plt.subplot(1,3,1)
+    plt.scatter(y=y_train[X_train.fips==6037.0].logerror, x=X_train[X_train.fips==6037.0].calculatedfinishedsquarefeet, alpha=.7)
+    plt.ylim([-3,3])
+    plt.xlabel('Finished Square Feet')
+    plt.ylabel('Log Error')
+    plt.title('LA County')
+
+    plt.subplot(1,3,2)
+    plt.scatter(y=y_train[X_train.fips==6059.0].logerror, x=X_train[X_train.fips==6059.0].calculatedfinishedsquarefeet, alpha=.7)
+    plt.ylim([-3,3])
+    plt.xlabel('Finished Square Feet')
+    plt.ylabel('Log Error')
+    plt.title('Orange County')
+
+    plt.subplot(1,3,3)
+    plt.scatter(y=y_train[X_train.fips==6111.0].logerror, x=X_train[X_train.fips==6111.0].calculatedfinishedsquarefeet, alpha=.7)
+    plt.ylim([-3,3])
+    plt.xlabel('Finished Square Feet')
+    plt.ylabel('Log Error')
+    plt.title('Ventura County')
+
+    plt.suptitle('Does the size of the home have an effect on log error in each county?')
+    plt.show()
+
