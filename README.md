@@ -26,10 +26,10 @@
 - The selected features had little impact in improving the overall prediction of log error when compared against baseline. The clusters did not significantly reduce the RMSE, but there was a very small improvement when using the absolute value for the log error. Overall, none of the models significantly outperformed Zillow's current model.
 
 ## Preliminary Questions:
-What is the relationship between square feet and log error? 
-Do area clusters have a large impact on the overall log error?
-Does the size of the home affect log error? Can that error be better determined by clustering by size?
-Does the location have an effect on log error? Where does the most log error occur?
+1. What is the relationship between square feet and log error? 
+2. Do area clusters have a large impact on the overall log error?
+3. Does the size of the home affect log error? Can that error be better determined by clustering by size?
+4. Does the location have an effect on log error? Where does the most log error occur?
 
 ## Initial Hypothesis:
 Our initial hypothesis is that the size of the home in square feet, the age of the home, and the location are the main features affecting log error.
